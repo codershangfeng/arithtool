@@ -16,7 +16,8 @@ struct arithtoolApp: App {
     }
 }
 
-struct quiz {
+struct quiz: Identifiable {
+    let id = UUID()
     var leftOperand: Int
     var op: String
     var rightOperand: Int
@@ -44,7 +45,7 @@ struct quiz {
 func genQuizzes() -> [quiz] {
     var quizzes: [quiz] = []
     
-    while quizzes.count <= 1 {
+    while quizzes.count <= 4 {
         let left = Int.random(in: 1...999)
         let right = Int.random(in: 1...999)
         

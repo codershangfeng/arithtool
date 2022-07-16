@@ -8,26 +8,69 @@
 import SwiftUI
 
 struct ContentView: View {
-    var genQuizzesFunc: (() -> [quiz])?
-    @State private var quiz: quiz?
-    @State private var equationText: String = ""
+    var genQuizzesFunc: (() -> [quiz]) =  { return [] }
+    @State private var quizzes: [quiz] = []
+    @State private var showResult: Bool = false
 
     var body: some View {
         VStack {
-            HStack {
-                Text(equationText)
-            }
-            HStack {
-                HStack {
-                    Button("Generate") {
-                        quiz = self.genQuizzesFunc!()[0]
-                        equationText = quiz?.question() ?? "Opps, error!"
-                    }
-                    Button("Reveal") {
-                        equationText = quiz?.equation() ?? "Opps, error!"
+            Spacer()
+            HStack(alignment: .center) {
+                if quizzes.count == 0 {
+                    EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "+/-", resultText: "?")
+                } else {
+                    VStack(alignment: .center) {
+                        ForEach(quizzes) { quiz in
+                            if showResult {
+                                EquationView(leftOperandText: "\(quiz.leftOperand)", rightOperandText: "\(quiz.rightOperand)", operatorText: quiz.op , resultText: "\(quiz.sum())")
+                                    .padding()
+                            } else {
+                                EquationView(leftOperandText: "\(quiz.leftOperand)", rightOperandText: "\(quiz.rightOperand)", operatorText: quiz.op , resultText: "?")
+                                    .padding()
+                            }
+                        }
                     }
                 }
             }
+            Spacer()
+            Divider()
+            HStack {
+                Spacer()
+                Button("Generate") {
+                    quizzes = self.genQuizzesFunc()
+                    showResult = false
+                }.background(Color.blue)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(5)
+                    .padding()
+                Spacer()
+                Button("Reveal") {
+                    showResult = true
+                }.disabled(quizzes.count == 0 || showResult == true)
+                    .background(Color.red)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(5)
+                    .padding()
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+}
+
+struct EquationView: View {
+    var leftOperandText: String = ""
+    var rightOperandText: String = ""
+    var operatorText: String = ""
+    var resultText: String = ""
+
+    var body: some View {
+        HStack {
+            Text(leftOperandText)
+            Text(operatorText)
+            Text(rightOperandText)
+            Text("=")
+            Text(resultText)
         }
     }
 }
