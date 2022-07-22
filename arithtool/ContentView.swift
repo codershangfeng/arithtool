@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    var genQuizzesFunc: ((Mode) -> [expression]) =  { _ in return [] }
+    var genQuizzesFunc: ((Mode) -> [expression]) = { _ in return [] }
     @State private var additionAndSubstractionExps: [expression] = []
     @State private var divisionExps: [expression] = []
     @State private var showResult: Bool = false
@@ -16,15 +16,15 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Spacer()
-            HStack() {
+            HStack {
                 Spacer()
-                VStack() {
+                VStack {
                     if additionAndSubstractionExps.count == 0 {
                         EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "+ or -", answerText: nil, maskText: "?")
                     } else {
                         VStack(alignment: .center) {
                             ForEach(additionAndSubstractionExps) { exp in
-                                EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: exp.op , answerText: "\(exp.total())", maskText: "?")
+                                EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: exp.op, answerText: "\(exp.total())", maskText: "?")
                                     .padding()
                             }
                         }
@@ -33,13 +33,13 @@ struct ContentView: View {
                 Spacer()
                 Divider()
                 Spacer()
-                VStack() {
+                VStack {
                     if divisionExps.count == 0 {
                         EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "÷", answerText: nil, maskText: "?")
                     } else {
                         VStack(alignment: .center) {
                             ForEach(divisionExps) { exp in
-                                EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: "÷" , answerText: "\(exp.quotient()) ······ \(exp.remainder())", maskText: "? ······ ?")
+                                EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: "÷", answerText: "\(exp.quotient()) ······ \(exp.remainder())", maskText: "? ······ ?")
                                     .padding()
                             }
                         }
@@ -70,7 +70,7 @@ struct EquationView: View {
     var leftOperandText: String = ""
     var rightOperandText: String = ""
     var operatorText: String = ""
-    var answerText: String? = nil
+    var answerText: String?
     var maskText: String = ""
     @State private var showAnswer: Bool = false
 
@@ -103,4 +103,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-

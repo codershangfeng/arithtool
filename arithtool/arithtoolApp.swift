@@ -21,7 +21,7 @@ struct expression: Identifiable {
     var leftOperand: Int
     var op: String
     var rightOperand: Int
-    
+
     func total() -> Int {
         switch self.op {
         case "+":
@@ -32,11 +32,11 @@ struct expression: Identifiable {
             return -1
         }
     }
-    
+
     func quotient() -> Int {
         return self.leftOperand / self.rightOperand
     }
-    
+
     func remainder() -> Int {
         return self.leftOperand % self.rightOperand
     }
