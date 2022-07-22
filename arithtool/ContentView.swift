@@ -20,17 +20,12 @@ struct ContentView: View {
                 Spacer()
                 VStack() {
                     if additionAndSubstractionExps.count == 0 {
-                        EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "+ or -", resultText: "?")
+                        EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "+ or -", answerText: nil, maskText: "?")
                     } else {
                         VStack(alignment: .center) {
                             ForEach(additionAndSubstractionExps) { exp in
-                                if showResult {
-                                    EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: exp.op , resultText: "\(exp.total())")
-                                        .padding()
-                                } else {
-                                    EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: exp.op , resultText: "?")
-                                        .padding()
-                                }
+                                EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: exp.op , answerText: "\(exp.total())", maskText: "?")
+                                    .padding()
                             }
                         }
                     }
@@ -40,17 +35,12 @@ struct ContentView: View {
                 Spacer()
                 VStack() {
                     if divisionExps.count == 0 {
-                        EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "÷", resultText: "?")
+                        EquationView(leftOperandText: "?", rightOperandText: "?", operatorText: "÷", answerText: nil, maskText: "?")
                     } else {
                         VStack(alignment: .center) {
                             ForEach(divisionExps) { exp in
-                                if showResult {
-                                    EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: "÷" , resultText: "\(exp.quotient()) ······ \(exp.remainder())")
-                                        .padding()
-                                } else {
-                                    EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: "÷", resultText: "? ······ ?")
-                                        .padding()
-                                }
+                                EquationView(leftOperandText: "\(exp.leftOperand)", rightOperandText: "\(exp.rightOperand)", operatorText: "÷" , answerText: "\(exp.quotient()) ······ \(exp.remainder())", maskText: "? ······ ?")
+                                    .padding()
                             }
                         }
                     }
@@ -70,14 +60,6 @@ struct ContentView: View {
                     .cornerRadius(5)
                     .padding()
                 Spacer()
-                Button(" 答案 ") {
-                    showResult = true
-                }.disabled(additionAndSubstractionExps.count == 0 || showResult == true)
-                    .background(Color.red)
-                    .foregroundColor(Color.white)
-                    .cornerRadius(5)
-                    .padding()
-                Spacer()
             }
             Spacer()
         }
@@ -88,7 +70,9 @@ struct EquationView: View {
     var leftOperandText: String = ""
     var rightOperandText: String = ""
     var operatorText: String = ""
-    var resultText: String = ""
+    var answerText: String? = nil
+    var maskText: String = ""
+    @State private var showAnswer: Bool = false
 
     var body: some View {
         HStack(alignment: .center) {
@@ -96,7 +80,20 @@ struct EquationView: View {
             Text(operatorText)
             Text(rightOperandText)
             Text("=")
-            Text(resultText)
+            if showAnswer && answerText != nil {
+                Text(answerText!)
+            } else {
+                Text(maskText)
+            }
+            if answerText != nil {
+                Button(" 答案 ") {
+                    showAnswer = true
+                }.disabled(showAnswer == true)
+                    .background(Color.green)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(5)
+                    .padding()
+            }
         }
     }
 }
